@@ -12,6 +12,7 @@ var Gpio = require('pigpio').Gpio,
   B1 = new Gpio( 4, {mode: Gpio.OUTPUT}),
   B2 = new Gpio(18, {mode: Gpio.OUTPUT});
   LED = new Gpio(22, {mode: Gpio.OUTPUT});
+  SLP = new Gpio( 23, {mode: Gpio.OUTPUT});
 
 app.get('/', function(req, res){
   res.sendfile('Touch.html');
@@ -25,12 +26,13 @@ io.on('connection', function(socket){
   console.log('A user connected');
   
   socket.on('pos', function (msx, msy) {
-    //console.log('X:' + msx + ' Y: ' + msy);
+    console.log('X:' + msx + ' Y: ' + msy);
     //io.emit('posBack', msx, msy);
 	
     msx = Math.min(Math.max(parseInt(msx), -255), 255);
     msy = Math.min(Math.max(parseInt(msy), -255), 255);
-
+    //Enable DRV8833
+    SLP.digitalWrite(1);
     if(msx > 0){
       A1.pwmWrite(msx);
       A2.pwmWrite(0);
@@ -76,6 +78,8 @@ io.on('connection', function(socket){
   
   //Whenever someone disconnects this piece of code is executed
   socket.on('disconnect', function () {
+    //Disable DRV8833
+    SLP.digitalWrite(0);
     console.log('A user disconnected');
   });
 
