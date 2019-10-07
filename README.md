@@ -2,7 +2,11 @@
 ## Description
 QuizZBot forks [CoreTechR's](https://github.com/CoretechR) Raspberry Pi Zero FPV Robot and utilizes in game questions to challenge players as they race around a predefined course.
 
-The questions are customized per player, team, or class and stored in a JSON file for easy readability.  
+The questions are customized per player, team, or class and stored in a JSON file for easy readability.
+
+## Requirements
+The QuizZBot requires the use of [QuizZBot-Server](https://github.com/techahoynyc/QuizZBot-Server), to provide the backend infrastructure for the web-based leaderboard and database for score tracking.
+ 
 ## BOM
 
 |Item|Qty|Price|Ext Price|
