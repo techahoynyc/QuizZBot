@@ -3,30 +3,30 @@
 <html lang=en>
 <head>
 <meta charset=utf-8>
-<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /> 
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="mobile-web-app-capable" content="yes">
 <title>Touch Control</title>
-<style type="text/css"> 
-  
+<style type="text/css">
+
   * {
 	  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
 	  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
 	/* make transparent link selection, adjust last value opacity 0 to 1.0 */
-	  -webkit-tap-highlight-color: rgba(0,0,0,0); 
+	  -webkit-tap-highlight-color: rgba(0,0,0,0);
 	  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
-	  -webkit-tap-highlight-color: rgba(0,0,0,0); 
+	  -webkit-tap-highlight-color: rgba(0,0,0,0);
 	}
-	
+
 	body {
 		background-color: #000000;
 		margin: 0px;
 	}
 	canvas {
-		display:block; 
-		position:absolute; 
+		display:block;
+		position:absolute;
 		z-index: 1;
 	}
-	
+
 	.container {
 		width:auto;
 		text-align:center;
@@ -52,7 +52,7 @@
 		border-style: solid;
 		border-color: white;
 		text-align:center;
-    
+
 		padding-top: 20%;
     padding-bottom: 20%;
     font-size: 16px;
@@ -70,7 +70,7 @@
 		border-style: solid;
 		border-color: white;
 		text-align:center;
-		
+
 		padding-top: 40%;
     padding-bottom: 40%;
     padding-left: 40%;
@@ -79,11 +79,11 @@
 		margin: 50% 3% 4% 4%;
 		cursor: pointer;
 	}
-	
+
 	.cam_button:active {
 		background-color: gray;
 	}
-  
+
   .off_button {
     background-color: transparent;
 		border-radius: 10%;
@@ -91,7 +91,7 @@
 		border-style: solid;
 		border-color: white;
 		text-align:center;
-		
+
     padding-top: 20%;
     padding-bottom: 20%;
     font-size: 100%;
@@ -99,9 +99,27 @@
 		cursor: pointer;
 	}
   .off_button:active {
-  	background-color: gray;
+  	background-color: blue;
 	}
-  
+
+  .question_button {
+  	background-color: red;
+		border-radius: 10%;
+		border: 2px;
+		border-style: solid;
+		border-color: white;
+		text-align:center;
+
+		padding-top: 20%;
+    padding-bottom: 20%;
+    font-size: 16px;
+		margin: 40% 7% 10%;
+		cursor: pointer;
+	}
+	.question_button:checked {
+  	background-color: #b1b;
+	}
+
   .light_button {
   	background-color: transparent;
 		border-radius: 10%;
@@ -109,7 +127,7 @@
 		border-style: solid;
 		border-color: white;
 		text-align:center;
-    
+
 		padding-top: 20%;
     padding-bottom: 20%;
     font-size: 16px;
@@ -119,7 +137,7 @@
 	.light_button:checked {
   	background-color: #b1b;
 	}
-  
+
 	.sidenav {
 		color: #fff;
 		height: 100%;
@@ -132,17 +150,20 @@
 		padding-top: 20px;
 		font-family: 'Roboto', sans-serif;
 	}
-  
- 
-	
-  
-  
-  
-  
+
+
+
+
+
+
+
 	p#stream{
-		position: relative; 
-        top: -15px; 
+		position: relative;
+        top: -15px;
 	}
+
+
+
 </style>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
@@ -152,10 +173,10 @@
 <script>
 
 var Vector2 = function (x,y) {
-	
-	this.x = x || 0; 
-	this.y = y || 0; 
-	
+
+	this.x = x || 0;
+	this.y = y || 0;
+
 };
 
 Vector2.prototype = {
@@ -166,26 +187,26 @@ Vector2.prototype = {
 		this.y = y;
 		return this;
 	},
-	
+
 	copyFrom : function (v) {
 		this.x = v.x;
 		this.y = v.y;
 	},
-	
+
 	plusEq : function (v) {
 		this.x+=v.x;
 		this.y+=v.y;
-		
-		return this; 
+
+		return this;
 	},
-	
+
 	minusEq : function (v) {
 		this.x-=v.x;
 		this.y-=v.y;
-		
-		return this; 
+
+		return this;
 	},
-		
+
 	equals : function (v) {
 		return((this.x==v.x)&&(this.y==v.x));
 	}
@@ -195,10 +216,10 @@ Vector2.prototype = {
 
 var canvas,
  	c, // c is the canvas' context 2D
-	container, 
-	halfWidth, 
+	container,
+	halfWidth,
 	halfHeight,
-	leftTouchID = -1, 
+	leftTouchID = -1,
 	leftTouchPos = new Vector2(0,0),
 	leftTouchStartPos = new Vector2(0,0),
 	leftVector = new Vector2(0,0);
@@ -209,7 +230,7 @@ var sendFlag = false;
 
 setupCanvas();
 
-var mouseX, mouseY, 
+var mouseX, mouseY,
 	// is this running in a touch capable environment?
 	mouseDown = false,
 	touches = []; // array of touch vectors;
@@ -223,27 +244,27 @@ setInterval(sendControls, 1000/20); // send control input at 20fps
 	canvas.addEventListener( 'touchstart', onTouchStart, false );
 	canvas.addEventListener( 'touchmove', onTouchMove, false );
 	canvas.addEventListener( 'touchend', onTouchEnd, false );
-	window.onorientationchange = resetCanvas;  
-	window.onresize = resetCanvas;  
+	window.onorientationchange = resetCanvas;
+	window.onresize = resetCanvas;
 
-	
+
 	canvas.addEventListener( 'mousemove', onMouseMove, false );
 	canvas.addEventListener( 'mousedown', onMouseDown, false );
 	canvas.addEventListener( 'mouseup', onMouseUp, false );
 
 
-function resetCanvas (e) {  
- 	// resize the canvas - but remember - this clears the canvas too. 
-  	canvas.width = window.innerWidth; 
+function resetCanvas (e) {
+ 	// resize the canvas - but remember - this clears the canvas too.
+  	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	
-	//halfWidth = canvas.width/2; 
+
+	//halfWidth = canvas.width/2;
 	halfWidth = canvas.width;
 
 	halfHeight = canvas.height/2;
-	
-	//make sure we scroll to the top left. 
-	window.scrollTo(0,0); 
+
+	//make sure we scroll to the top left.
+	window.scrollTo(0,0);
 }
 
 var rawLeft, rawRight, MaxJoy = 255, MinJoy = -255, MaxValue = 255,
@@ -264,7 +285,7 @@ function tankDrive(x, y){
 	if (isNaN(rad)) rad = 0;
 	// and in degrees
 	var angle = rad * 180 / Math.PI;
-	
+
 	// Now angle indicates the measure of turn
     // Along a straight line, with an angle o, the turn co-efficient is same
     // this applies for angles between 0-90, with angle 0 the co-eff is -1
@@ -295,88 +316,88 @@ function tankDrive(x, y){
 
 	leftMot = Remap(rawLeft, MinJoy, MaxJoy, MinValue, MaxValue);
 	rightMot = Remap(rawRight, MinJoy, MaxJoy, MinValue, MaxValue);
-	
+
 }
 
 function init(){
-	
+
 }
 
 function draw() {
-  
-	c.clearRect(0,0,canvas.width, canvas.height); 
 
-	
+	c.clearRect(0,0,canvas.width, canvas.height);
+
+
 	//if touch
 		for(var i=0; i<touches.length; i++) {
-			
-			var touch = touches[i]; 
-			
-			if(touch.identifier == leftTouchID){
-				c.beginPath(); 
-				c.strokeStyle = "white"; 
-				c.lineWidth = 6; 
-				c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 40,0,Math.PI*2,true); 
-				c.stroke();
-				c.beginPath(); 
-				c.strokeStyle = "white"; 
-				c.lineWidth = 2; 
-				c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 60,0,Math.PI*2,true); 
-				c.stroke();
-				c.beginPath(); 
-				c.strokeStyle = "white"; 
-				c.arc(leftTouchPos.x, leftTouchPos.y, 40, 0,Math.PI*2, true); 
-				c.stroke(); 
-				
-			} else {
-				
-				c.beginPath(); 
-				c.fillStyle = "white";
-				//c.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30); 
 
-				c.beginPath(); 
+			var touch = touches[i];
+
+			if(touch.identifier == leftTouchID){
+				c.beginPath();
+				c.strokeStyle = "white";
+				c.lineWidth = 6;
+				c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 40,0,Math.PI*2,true);
+				c.stroke();
+				c.beginPath();
+				c.strokeStyle = "white";
+				c.lineWidth = 2;
+				c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 60,0,Math.PI*2,true);
+				c.stroke();
+				c.beginPath();
+				c.strokeStyle = "white";
+				c.arc(leftTouchPos.x, leftTouchPos.y, 40, 0,Math.PI*2, true);
+				c.stroke();
+
+			} else {
+
+				c.beginPath();
+				c.fillStyle = "white";
+				//c.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30);
+
+				c.beginPath();
 				c.strokeStyle = "red";
 				c.lineWidth = "6";
-				c.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true); 
+				c.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true);
 				c.stroke();
 			}
 		}
-	
-	//if no touch		
+
+	//if no touch
 		if(mouseDown){
-		
-			c.beginPath(); 
-			c.strokeStyle = "white"; 
-			c.lineWidth = 6; 
-			c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 40,0,Math.PI*2,true); 
+
+			c.beginPath();
+			c.strokeStyle = "white";
+			c.lineWidth = 6;
+			c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 40,0,Math.PI*2,true);
 			c.stroke();
-			c.beginPath(); 
-			c.strokeStyle = "white"; 
-			c.lineWidth = 2; 
-			c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 60,0,Math.PI*2,true); 
+			c.beginPath();
+			c.strokeStyle = "white";
+			c.lineWidth = 2;
+			c.arc(leftTouchStartPos.x, leftTouchStartPos.y, 60,0,Math.PI*2,true);
 			c.stroke();
-			c.beginPath(); 
-			c.strokeStyle = "white"; 
-			c.arc(leftTouchPos.x, leftTouchPos.y, 40, 0,Math.PI*2, true); 
-			c.stroke(); 
-					
-			c.fillStyle	 = "white"; 
-			//c.fillText("mouse : "+mouseX+", "+mouseY, mouseX, mouseY); 
-			c.beginPath(); 
+			c.beginPath();
+			c.strokeStyle = "white";
+			c.arc(leftTouchPos.x, leftTouchPos.y, 40, 0,Math.PI*2, true);
+			c.stroke();
+
+			c.fillStyle	 = "white";
+			//c.fillText("mouse : "+mouseX+", "+mouseY, mouseX, mouseY);
+			c.beginPath();
 			c.strokeStyle = "white";
 			c.lineWidth = "6";
-			c.arc(mouseX, mouseY, 40, 0, Math.PI*2, true); 
+			c.arc(mouseX, mouseY, 40, 0, Math.PI*2, true);
 			c.stroke();
 		}
-	
-	
-	
-	
+
+
+
+
 	//c.fillText("Left Motor: " + leftMot + " Right Motor: " + rightMot, 10, 30);
 	//c.fillText("Left Vx: " + leftVector.x + " Left Vy: " + leftVector.y, 10, 50);
 	//c.fillText("Temperature: "+temperature+"°C", 10, 30);
-	
-	
+
+
 	socket.on('temp', function(msg){
 		document.getElementById("temp").innerHTML = parseInt(msg) + '°C';
 		temperature = msg;
@@ -390,22 +411,22 @@ function draw() {
 			document.getElementById("volt").innerHTML = ' ';
 		}
 	});
-	
+
 	socket.on('cam', function(msg){
 		document.getElementById("stream").innerHTML = img;
 	});
 }
 
-/*	
- *	Touch event (e) properties : 
+/*
+ *	Touch event (e) properties :
  *	e.touches: 			Array of touch objects for every finger currently touching the screen
  *	e.targetTouches: 	Array of touch objects for every finger touching the screen that
  *						originally touched down on the DOM object the transmitted the event.
- *	e.changedTouches	Array of touch objects for touches that are changed for this event. 					
- *						I'm not sure if this would ever be a list of more than one, but would 
- *						be bad to assume. 
+ *	e.changedTouches	Array of touch objects for touches that are changed for this event.
+ *						I'm not sure if this would ever be a list of more than one, but would
+ *						be bad to assume.
  *
- *	Touch objects : 
+ *	Touch objects :
  *
  *	identifier: An identifying number, unique to each touch event
  *	target: DOM object that broadcast the event
@@ -415,88 +436,88 @@ function draw() {
  *	screenY: Relative to the screen
  *	pageX: Relative to the full page (includes scrolling)
  *	pageY: Relative to the full page (includes scrolling)
- */	
+ */
 
 function onTouchStart(e) {
- 
+
 	for(var i = 0; i<e.changedTouches.length; i++){
-		var touch =e.changedTouches[i]; 
-		//console.log(leftTouchID + " " 
+		var touch =e.changedTouches[i];
+		//console.log(leftTouchID + " "
 		if((leftTouchID<0) && (touch.clientX<halfWidth))
 		{
-			leftTouchID = touch.identifier; 
-			leftTouchStartPos.reset(touch.clientX, touch.clientY); 	
-			leftTouchPos.copyFrom(leftTouchStartPos); 
-			leftVector.reset(0,0); 
-			continue; 		
+			leftTouchID = touch.identifier;
+			leftTouchStartPos.reset(touch.clientX, touch.clientY);
+			leftTouchPos.copyFrom(leftTouchStartPos);
+			leftVector.reset(0,0);
+			continue;
 		} else {
-			
-			makeBullet(); 
-			
-		}	
+
+			makeBullet();
+
+		}
 	}
-	touches = e.touches; 
+	touches = e.touches;
 }
 
 function onMouseDown(event) {
-	leftTouchStartPos.reset(event.offsetX, event.offsetY); 	
-	leftTouchPos.copyFrom(leftTouchStartPos); 
-	leftVector.reset(0,0); 
+	leftTouchStartPos.reset(event.offsetX, event.offsetY);
+	leftTouchPos.copyFrom(leftTouchStartPos);
+	leftVector.reset(0,0);
 	mouseDown = true;
 }
- 
+
 function onTouchMove(e) {
 	 // Prevent the browser from doing its default thing (scroll, zoom)
 	e.preventDefault();
-	
+
 	for(var i = 0; i<e.changedTouches.length; i++){
-		var touch =e.changedTouches[i]; 
+		var touch =e.changedTouches[i];
 		if(leftTouchID == touch.identifier)
 		{
-			leftTouchPos.reset(touch.clientX, touch.clientY); 
-			leftVector.copyFrom(leftTouchPos); 
+			leftTouchPos.reset(touch.clientX, touch.clientY);
+			leftVector.copyFrom(leftTouchPos);
 			leftVector.minusEq(leftTouchStartPos);
 			sendFlag = true;
-			break; 		
-		}		
+			break;
+		}
 	}
-	
-	touches = e.touches; 
-	
-} 
+
+	touches = e.touches;
+
+}
 
 function onMouseMove(event) {
 
 	mouseX = event.offsetX;
 	mouseY = event.offsetY;
 	if(mouseDown){
-		leftTouchPos.reset(event.offsetX, event.offsetY); 
-		leftVector.copyFrom(leftTouchPos); 
-		leftVector.minusEq(leftTouchStartPos); 	
+		leftTouchPos.reset(event.offsetX, event.offsetY);
+		leftVector.copyFrom(leftTouchPos);
+		leftVector.minusEq(leftTouchStartPos);
 		sendFlag = true;
 	}
-	
+
 }
- 
-function onTouchEnd(e) { 
-   
-   	touches = e.touches; 
+
+function onTouchEnd(e) {
+
+   	touches = e.touches;
 
 	for(var i = 0; i<e.changedTouches.length; i++){
-		var touch =e.changedTouches[i]; 
+		var touch =e.changedTouches[i];
 		if(leftTouchID == touch.identifier)
 		{
-			leftTouchID = -1; 
+			leftTouchID = -1;
 			leftVector.reset(0,0);
 			leftMot = rightMot = 0;
 			sendFlag = true;
-			break; 		
-		}		
+			break;
+		}
 	}
-   
+
 }
 
-function onMouseUp(event) { 
+function onMouseUp(event) {
 
 	leftVector.reset(0,0);
 	leftMot = rightMot = 0;
@@ -507,12 +528,12 @@ function onMouseUp(event) {
 /*
 Source for keyboard detection: Braden Best:
 https://stackoverflow.com/questions/5203407/how-to-detect-if-multiple-keys-are-pressed-at-once-using-javascript
-*/	
+*/
 var map = {};
 onkeydown = onkeyup = function(e){
     e = e || event; // to deal with IE
     map[e.keyCode] = e.type == 'keydown';
-	
+
 	if(map[38]){ // ArrowUp
 		leftVector.y = -255;
 	}
@@ -525,7 +546,7 @@ onkeydown = onkeyup = function(e){
 	if(map[39]){ // ArrowRight
 		leftVector.x = 255;
 	}
-	
+
 	if(!map[38] && !map[40]){ // ArrowUp/Down is not pressed
 		leftVector.y = 0;
 	}
@@ -537,19 +558,19 @@ onkeydown = onkeyup = function(e){
 }
 
 function setupCanvas() {
-	
+
 	canvas = document.createElement( 'canvas' );
 	c = canvas.getContext( '2d' );
 	container = document.createElement( 'div' );
 	container.className = "container";
 
 	document.body.appendChild( container );
-	container.appendChild(canvas);	
+	container.appendChild(canvas);
 
-	resetCanvas(); 
-	
+	resetCanvas();
+
 	c.strokeStyle = "#ffffff";
-	c.lineWidth =2;	
+	c.lineWidth =2;
 }
 
 function mouseOver(minX, minY, maxX, maxY){
@@ -560,7 +581,7 @@ function sendControls(){
 	if(sendFlag == true){
 		leftVector.x = Math.min(Math.max(parseInt(leftVector.x), -255), 255);
 		leftVector.y = Math.min(Math.max(parseInt(leftVector.y), -255), 255);
-		
+
 		tankDrive(leftVector.x, -leftVector.y);
 		if(leftMot > 0) leftMot += 90;
 		if(leftMot < 0) leftMot -= 90;
@@ -568,7 +589,7 @@ function sendControls(){
 		if(rightMot < 0) rightMot -= 90;
 		leftMot = Math.min(Math.max(parseInt(leftMot), -255), 255);
 		rightMot = Math.min(Math.max(parseInt(rightMot), -255), 255);
-		
+
 		socket.emit('pos', leftMot, rightMot);
 		sendFlag = false;
 	}
@@ -581,15 +602,22 @@ function sendControls(){
 <p id="stream"></p>
 
 <script>
-// This script automatically picks the right IP for the stream 
+// This script automatically picks the right IP for the stream
 // Thanks to wonx (github.com/wonx)
 host = window.location.hostname;
 img = '<img src="http://' + host + ':9000/?action=stream" style="height:100vh;"/>';
 //img = '<img src="stream.png" style="height:100vh;"/>';
 document.getElementById("stream").innerHTML = img;
+
 function takePicture() {
 	socket.emit('cam', 1);
 }
+
+function displayQ(){
+  window.location.href="http://10.82.1.17/question.html";
+
+}
+
 function shutdown() {
     if(confirm("This will shutdown the Pi.\nAre you sure?")){
 		alert('Shutting down...\nPlease wait 20s before turning the power off.');
@@ -618,6 +646,7 @@ function handleHeadlightClick(cb) {
 </div>
 <div class="sidenav" style="right:0;z-index: 2;">
   <center class="off_button" type="button" onclick="shutdown()">OFF</center>
+  <center class="question_button" type="button" onclick="displayQ()">QBUTTON</center>
   <center class="cam_button" type="button" onclick="takePicture()"></center>
   <div>
     <div class="switch">
@@ -630,7 +659,7 @@ function handleHeadlightClick(cb) {
 
 
 <div style="position:fixed;bottom:40vh;right:0;padding:25px">
-	
+
 </div>
 
 </body>
