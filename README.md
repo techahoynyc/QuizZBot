@@ -5,6 +5,7 @@ QuizZBot forks [CoreTechR's](https://github.com/CoretechR) Raspberry Pi Zero FPV
 The questions are customized per player, team, or class and stored in a JSON file for easy readability.  
 ## BOM
 ##BOM
+
 |Link|Item|Qty|Price|Ext Price|
 |---|---|---|---|---|
 |https://www.adafruit.com/product/3400|Raspberry Pi Zero W|1|10|10|
