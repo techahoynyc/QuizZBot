@@ -1,6 +1,6 @@
 # QuizZBot
 ## Description
-QuizZBot forks (CoreTechR's)[https://github.com/CoretechR] Raspberry Pi Zero FPV Robot and utilizes in game questions to challenge players as they race around a predefined course.
+QuizZBot forks [CoreTechR's](https://github.com/CoretechR) Raspberry Pi Zero FPV Robot and utilizes in game questions to challenge players as they race around a predefined course.
 
 The questions are customized per player, team, or class and stored in a JSON file for easy readability.  
 ## BOM
