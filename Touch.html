@@ -120,6 +120,25 @@
   	background-color: #b1b;
 	}
 
+  .banana_button {
+  	background-color: red;
+		border-radius: 10%;
+		border: 2px;
+		border-style: solid;
+		border-color: white;
+		text-align:center;
+
+		padding-top: 20%;
+    padding-bottom: 20%;
+    font-size: 16px;
+		margin: 40% 7% 10%;
+		cursor: pointer;
+	}
+	.banana_button:checked {
+  	background-color: #b1b;
+	}
+
+
   .light_button {
   	background-color: transparent;
 		border-radius: 10%;
@@ -614,8 +633,13 @@ function takePicture() {
 }
 
 function displayQ(){
-  window.location.href="http://10.82.1.17/question.html";
+  window.location.href="http://jane:3000";
 
+}
+
+function slip(){
+  socket.emit('slip', 1);
+  //alert('WE ARE INSIDE SLIP');
 }
 
 function shutdown() {
@@ -647,6 +671,7 @@ function handleHeadlightClick(cb) {
 <div class="sidenav" style="right:0;z-index: 2;">
   <center class="off_button" type="button" onclick="shutdown()">OFF</center>
   <center class="question_button" type="button" onclick="displayQ()">QBUTTON</center>
+  <center class="banana_button" type="button" onclick="slip()">Banana</center>
   <center class="cam_button" type="button" onclick="takePicture()"></center>
   <div>
     <div class="switch">
