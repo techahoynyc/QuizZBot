@@ -9,20 +9,20 @@ The QuizZBot requires the use of [QuizZBot-Server](https://github.com/techahoyny
 
 ## Installation
 1. Copy this repository
-```
-git clone https://github.com/techahoynyc/QuizZBots
-```
+  ```
+  git clone https://github.com/techahoynyc/QuizZBots
+  ```
 1. Install Node dependencies
-```
-~ $ cd QuizZBot
-~/QuizZBot $ npm install
-```
+  ```
+  ~ $ cd QuizZBot
+  ~/QuizZBot $ npm install
+  ```
 1. Append the following lines to /etc/rc.local, so QuizZBot starts at boot
-```
-cd /home/pi/QuizZBot
-sudo node app.js&
-cd
-```
+  ```
+  cd /home/pi/QuizZBot
+  sudo node app.js&
+  cd
+  ```
 
 ## BOM
 
