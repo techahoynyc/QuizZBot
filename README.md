@@ -10,7 +10,7 @@ The QuizZBot requires the use of [QuizZBot-Server](https://github.com/techahoyny
 ## Installation
 1. Copy this repository  
    ```
-   git clone https://github.com/techahoynyc/QuizZBots
+   git clone https://github.com/techahoynyc/QuizZBot
    ```
 
 1. Install Node dependencies  
