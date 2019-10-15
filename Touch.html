@@ -189,13 +189,7 @@
 <ul id="messages"></ul>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-//Check if we are calling an action
-const params = new URL(location.href).searchParams;
-const action = params.get('action');
 
-if(action == 'slip'){
-  socket.emit('slip', 1);
-}
 
 var Vector2 = function (x,y) {
 
@@ -620,6 +614,8 @@ function sendControls(){
 	}
 }
 
+
+
 </script>
 <body scroll="no" style="overflow: hidden">
 <center>
@@ -639,7 +635,7 @@ function takePicture() {
 }
 
 function displayQ(){
-  window.location.href="http://10.82.1.17/question.html";
+  window.location.href="http://jane.techahoy.local:3000";
 
 }
 
@@ -665,7 +661,16 @@ function handleHeadlightClick(cb) {
   }
   socket.emit('light', headlight);
 }
+//Check if we are calling an action
+const params = new URL(location.href).searchParams;
+const action = params.get('action');
 
+if(action == "slip"){
+  alert(action);
+  socket.emit('slip', 1);
+} else {
+  alert('no slip');
+}
 </script>
 
 </center>
