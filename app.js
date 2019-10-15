@@ -71,6 +71,9 @@ io.on('connection', function(socket){
 
   });
 
+  socket.on('light', function(toggle) {
+      LED.digitalWrite(toggle);
+    }); 
 
   socket.on('cam', function(toggle) {
     var numPics = 0;
