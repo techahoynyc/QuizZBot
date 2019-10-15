@@ -6,7 +6,24 @@ The questions are customized per player, team, or class and stored in a JSON fil
 
 ## Requirements
 The QuizZBot requires the use of [QuizZBot-Server](https://github.com/techahoynyc/QuizZBot-Server), to provide the backend infrastructure for the web-based leaderboard and database for score tracking.
- 
+
+## Installation
+1. Copy this repository
+```
+git clone https://github.com/techahoynyc/QuizZBots
+```
+1. Install Node dependencies
+```
+~ $ cd QuizZBot
+~/QuizZBot $ npm install
+```
+1. Append the following lines to /etc/rc.local, so QuizZBot starts at boot
+```
+cd /home/pi/QuizZBot
+sudo node app.js&
+cd
+```
+
 ## BOM
 
 |Item|Qty|Price|Ext Price|
