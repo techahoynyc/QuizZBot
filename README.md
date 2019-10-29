@@ -26,6 +26,19 @@ The QuizZBot requires the use of [QuizZBot-Server](https://github.com/techahoyny
    cd
    ```
 
+1. (Optional) If you camera image is upside down modify start_stream.sh and remove the **-vf** and **-hf** parameters.  Change this:
+   ```
+   LD_LIBRARY_PATH=/opt/mjpg-streamer/ /opt/mjpg-streamer/mjpg_streamer -i "input_raspicam.so -vf -hf -fps 15 -q 50 -x 640 -y 480" -o "output_http.so -p 9000 -w /opt/mjpg-streamer/www" > /dev/null 2>&1&
+   ```
+   To this:
+   ```
+   LD_LIBRARY_PATH=/opt/mjpg-streamer/ /opt/mjpg-streamer/mjpg_streamer -i "input_raspicam.so -fps 15 -q 50 -x 640 -y 480" -o "output_http.so -p 9000 -w /opt/mjpg-streamer/www" > /dev/null 2>&1&
+   ```
+
+
+
+   Remove -vf and -hf  inside the file start_stream.sh to rotate the camera picture 180 degrees.
+
 ## BOM
 
 |Item|Qty|Price|Ext Price|
