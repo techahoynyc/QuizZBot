@@ -666,10 +666,7 @@ const params = new URL(location.href).searchParams;
 const action = params.get('action');
 
 if(action == "slip"){
-  alert(action);
   socket.emit('slip', 1);
-} else {
-  alert('no slip');
 }
 </script>
 
