@@ -35,10 +35,6 @@ The QuizZBot requires the use of [QuizZBot-Server](https://github.com/techahoyny
    LD_LIBRARY_PATH=/opt/mjpg-streamer/ /opt/mjpg-streamer/mjpg_streamer -i "input_raspicam.so -fps 15 -q 50 -x 640 -y 480" -o "output_http.so -p 9000 -w /opt/mjpg-streamer/www" > /dev/null 2>&1&
    ```
 
-
-
-   Remove -vf and -hf  inside the file start_stream.sh to rotate the camera picture 180 degrees.
-
 ## BOM
 
 |Item|Qty|Price|Ext Price|
