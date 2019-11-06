@@ -22,6 +22,16 @@ app.get('/', function(req, res){
 
 child = exec("sudo bash start_stream.sh", function(error, stdout, stderr){});
 
+function compareWheels(msx, msy) {
+
+  if( ((msx < 0) && (msy>0)) || ((msx > 0) && (msy < 0)) ){
+    msx = .25 * msx;
+    msy = .25 * msy;
+  }
+
+  return [msx, msy];
+}
+
 //Whenever someone connects this gets executed
 io.on('connection', function(socket){
   console.log('A user connected');
@@ -29,9 +39,15 @@ io.on('connection', function(socket){
   socket.on('pos', function (msx, msy) {
     console.log('X:' + msx + ' Y: ' + msy);
     //io.emit('posBack', msx, msy);
+    values = compareWheels(msx,msy);
+    console.log('New x: ' + values[0] + 'New y: ' + msy);
+    msx = values[0];
+    msy = values[1];
 
     msx = Math.min(Math.max(parseInt(msx), -255), 255);
     msy = Math.min(Math.max(parseInt(msy), -255), 255);
+
+
     //Enable DRV8833
     SLP.digitalWrite(1);
     if(msx > 0){
@@ -67,13 +83,13 @@ io.on('connection', function(socket){
         A1.pwmWrite(0);
       //  B1.pwmWrite(0);
 
-        console.log("WE MADE IT TWICE!");
+//        console.log("WE MADE IT TWICE!");
 
   });
 
   socket.on('light', function(toggle) {
       LED.digitalWrite(toggle);
-    }); 
+    });
 
   socket.on('cam', function(toggle) {
     var numPics = 0;
@@ -105,18 +121,18 @@ io.on('connection', function(socket){
   setInterval(function(){ // send temperature every 5 sec
     child = exec("cat /sys/class/thermal/thermal_zone0/temp", function(error, stdout, stderr){
       if(error !== null){
-         console.log('exec error: ' + error);
+      //   console.log('exec error: ' + error);
       } else {
          var temp = parseFloat(stdout)/1000;
          io.emit('temp', temp);
-         console.log('temp', temp);
+    //     console.log('temp', temp);
       }
     });
     if(!adc.busy){
       adc.readADCSingleEnded(0, '4096', '250', function(err, data){ //channel, gain, samples
         if(!err){
           voltage = 2*parseFloat(data)/1000;
-          console.log("ADC: ", voltage);
+  //        console.log("ADC: ", voltage);
           io.emit('volt', voltage);
         }
       });
